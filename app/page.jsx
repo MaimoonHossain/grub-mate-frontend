@@ -1,5 +1,9 @@
-import Image from 'next/image';
+import Navbar from './componenets/reusables/Navbar';
 
 export default function Home() {
-  return <div></div>;
+  return (
+    <div>
+      <Navbar />
+    </div>
+  );
 }

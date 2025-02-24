@@ -1,13 +1,40 @@
 'use client';
+import API_PATHS from '@/app/lib/apiPaths';
+import axiosInstance from '@/app/lib/axiosInstance';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle login logic here
+    if (!email || !password) {
+      toast.success('All fields are required!');
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters long!');
+      return;
+    }
+
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        toast.success('Login successful!');
+        // Redirect to home page
+        // window.location.href = '/';
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.msg || 'Login failed');
+    }
   };
 
   return (
